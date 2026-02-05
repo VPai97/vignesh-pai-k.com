@@ -1,5 +1,6 @@
 const menuButton = document.querySelector(".menu-button");
 const mobileNav = document.querySelector(".mobile-nav");
+const siteHeader = document.querySelector(".site-header");
 
 if (menuButton && mobileNav) {
   menuButton.addEventListener("click", () => {
@@ -39,5 +40,30 @@ const backToTop = document.querySelector(".back-to-top");
 if (backToTop) {
   backToTop.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+
+const updateHeaderState = () => {
+  if (!siteHeader) return;
+  const shouldShrink = window.scrollY > 30;
+  siteHeader.classList.toggle("is-scrolled", shouldShrink);
+};
+
+updateHeaderState();
+window.addEventListener("scroll", updateHeaderState, { passive: true });
+
+const moreToggle = document.querySelector(".more-toggle");
+const moreLinks = document.querySelector(".more-links");
+
+if (moreToggle && moreLinks) {
+  moreToggle.addEventListener("click", () => {
+    const isHidden = moreLinks.hasAttribute("hidden");
+    if (isHidden) {
+      moreLinks.removeAttribute("hidden");
+      moreToggle.textContent = "Less writing";
+    } else {
+      moreLinks.setAttribute("hidden", "");
+      moreToggle.textContent = "More writing";
+    }
   });
 }
