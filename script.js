@@ -1,21 +1,4 @@
-const menuButton = document.querySelector(".menu-button");
-const mobileNav = document.querySelector(".mobile-nav");
 const siteHeader = document.querySelector(".site-header");
-
-if (menuButton && mobileNav) {
-  menuButton.addEventListener("click", () => {
-    const isOpen = menuButton.getAttribute("aria-expanded") === "true";
-    menuButton.setAttribute("aria-expanded", String(!isOpen));
-    mobileNav.hidden = isOpen;
-  });
-
-  mobileNav.addEventListener("click", (event) => {
-    if (event.target instanceof HTMLAnchorElement) {
-      mobileNav.hidden = true;
-      menuButton.setAttribute("aria-expanded", "false");
-    }
-  });
-}
 
 const revealElements = document.querySelectorAll(".section, .hero-card, .hero-text");
 
