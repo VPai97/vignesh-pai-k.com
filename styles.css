@@ -105,6 +105,11 @@ a {
   border-color: var(--accent);
 }
 
+.nav a.active {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
 
 
 .site-header.is-scrolled .header-inner {
