@@ -312,6 +312,11 @@ a {
   padding: 0;
   overflow: hidden;
   color: var(--ink);
+  border-radius: 18px;
+  box-shadow: 0 18px 30px rgba(28, 26, 23, 0.12);
+  background: var(--card);
+  display: grid;
+  grid-template-rows: auto 1fr;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -329,11 +334,15 @@ a {
 
 .story-body {
   padding: 16px 18px 18px;
+  background: #fff;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
 }
 
 .story-title {
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: 1rem;
   line-height: 1.35;
 }
 
