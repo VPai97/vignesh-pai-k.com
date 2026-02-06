@@ -158,11 +158,12 @@ button {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  overflow: hidden;
+  overflow: visible;
   border: 2px solid var(--stroke);
   background: var(--card);
   transition: all var(--duration-normal) var(--ease-out-expo);
   flex-shrink: 0;
+  z-index: 50;
 }
 
 .logo::after {
@@ -171,17 +172,27 @@ button {
   inset: 0;
   border-radius: 50%;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .logo:hover {
-  transform: scale(1.05);
+  transform: scale(3);
   border-color: var(--accent);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 0 0 3px var(--accent),
+    0 0 0 6px rgba(196, 86, 42, 0.2);
+  z-index: 200;
+  cursor: zoom-in;
 }
 
 .logo-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
+  transition: transform var(--duration-normal) var(--ease-out-expo);
 }
 
 .nav {
