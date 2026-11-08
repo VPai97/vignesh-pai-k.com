@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="../styles.css" />
   </head>
   <body>
-    <div class="ambient" aria-hidden="true"></div>
-
     <header class="site-header">
       <div class="container header-inner">
         <a class="logo" href="/" aria-label="Vignesh Pai K">
@@ -19,16 +17,16 @@
             class="logo-img"
             src="../assets/profile.jpg"
             alt="Vignesh Pai K portrait"
-            width="48"
-            height="48"
+            width="36"
+            height="36"
           />
         </a>
         <nav class="nav">
-          <a href="/">Home</a>
-          <a href="/experience/" class="active">Experience</a>
-          <a href="/writing/">Writing</a>
-          <a href="/jobs/">Jobs</a>
-          <a href="/contact/">Contact</a>
+          <a href="/">home</a>
+          <a href="/experience/" class="active">experience</a>
+          <a href="/writing/">writing</a>
+          <a href="/jobs/">jobs</a>
+          <a href="/contact/">contact</a>
         </nav>
       </div>
     </header>
@@ -36,14 +34,13 @@
     <main>
       <section id="experience" class="section container">
         <div class="section-title">
-          <p class="eyebrow">Experience</p>
           <h2>Where I've contributed</h2>
         </div>
-        <div class="timeline stagger-children">
-          <article class="timeline-item">
-            <div>
+        <div class="ledger">
+          <article class="ledger-row">
+            <div class="ledger-row-head">
               <h3>Business Analyst · Zerodha</h3>
-              <p class="muted">Oct 2024 — Present</p>
+              <span class="period">Oct 2024 — Present</span>
             </div>
             <ul>
               <li>Leading analysis to improve operational outcomes across business functions.</li>
@@ -51,10 +48,10 @@
               <li>Collaborating with stakeholders to deliver scalable improvements.</li>
             </ul>
           </article>
-          <article class="timeline-item">
-            <div>
+          <article class="ledger-row">
+            <div class="ledger-row-head">
               <h3>Manager · Zerodha</h3>
-              <p class="muted">Sep 2023 — Oct 2024</p>
+              <span class="period">Sep 2023 — Oct 2024</span>
             </div>
             <ul>
               <li>Owned teams and processes to drive reliable business operations.</li>
@@ -62,10 +59,10 @@
               <li>Coordinated cross-team initiatives and operational rollouts.</li>
             </ul>
           </article>
-          <article class="timeline-item">
-            <div>
+          <article class="ledger-row">
+            <div class="ledger-row-head">
               <h3>Assistant Manager · Zerodha</h3>
-              <p class="muted">May 2021 — Sep 2023</p>
+              <span class="period">May 2021 — Sep 2023</span>
             </div>
             <ul>
               <li>Supported process design, reporting, and operational risk controls.</li>
@@ -73,10 +70,10 @@
               <li>Worked closely with partners to deliver reliable service outcomes.</li>
             </ul>
           </article>
-          <article class="timeline-item">
-            <div>
+          <article class="ledger-row">
+            <div class="ledger-row-head">
               <h3>Risk Control Analyst · Amazon</h3>
-              <p class="muted">Aug 2020 — Apr 2021</p>
+              <span class="period">Aug 2020 — Apr 2021</span>
             </div>
             <ul>
               <li>Monitored risk signals and supported control strategies.</li>
@@ -84,10 +81,10 @@
               <li>Collaborated across teams to maintain compliance and quality.</li>
             </ul>
           </article>
-          <article class="timeline-item">
-            <div>
-              <h3>Graduate Engineering Trainee (Quality Assurance) · Stumpp Schuele & Somappa Springs Pvt. Ltd.</h3>
-              <p class="muted">Jul 2019 — Jul 2020</p>
+          <article class="ledger-row">
+            <div class="ledger-row-head">
+              <h3>Graduate Engineering Trainee (Quality Assurance) · Stumpp Schuele &amp; Somappa Springs Pvt. Ltd.</h3>
+              <span class="period">Jul 2019 — Jul 2020</span>
             </div>
             <ul>
               <li>Supported QA processes and documentation for manufacturing quality.</li>
@@ -101,7 +98,7 @@
 
     <footer class="footer">
       <div class="container footer-inner">
-        <p>© 2026 Vignesh Pai K. Built with care.</p>
+        <p>© 2026 Vignesh Pai K</p>
         <button class="back-to-top" type="button">Back to top</button>
       </div>
     </footer>
