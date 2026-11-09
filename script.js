@@ -1,78 +1,115 @@
 /**
- * Vignesh Pai K — Personal Site
- * Ledger Design System — Interactive Enhancements
+ * Vignesh Pai K — personal site
+ * Home hero "Under the lamp": the pointer is a desk lamp; clippings near it light up.
  */
-
 (function () {
   'use strict';
 
-  // ============================================================================
-  // Header — Scroll State
-  // ============================================================================
+  const hero = document.querySelector('[data-lamp]');
+  if (!hero) return;
 
-  const siteHeader = document.querySelector('.site-header');
-  let ticking = false;
+  const clips = Array.from(hero.querySelectorAll('.clip'));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const updateHeaderState = () => {
-    if (!siteHeader) return;
-    siteHeader.classList.toggle('is-scrolled', window.scrollY > 30);
-    ticking = false;
+  if (reduceMotion) {
+    clips.forEach((c) => c.style.setProperty('--lit', '0.8'));
+    return;
+  }
+
+  let centers = [];
+  let box = hero.getBoundingClientRect();
+  let radius = 260;
+
+  const measure = () => {
+    box = hero.getBoundingClientRect();
+    radius = box.width < 700 ? 170 : 270;
+    centers = clips.map((c) => {
+      if (c.offsetParent === null) return null; // hidden on this screen size
+      const r = c.getBoundingClientRect();
+      return { x: r.left - box.left + r.width / 2, y: r.top - box.top + r.height / 2 };
+    });
   };
 
-  const onScroll = () => {
-    if (!ticking) {
-      requestAnimationFrame(updateHeaderState);
-      ticking = true;
+  let lampX = 0;
+  let lampY = 0;
+
+  const light = (x, y) => {
+    lampX = x;
+    lampY = y;
+    hero.style.setProperty('--lx', x + 'px');
+    hero.style.setProperty('--ly', y + 'px');
+    for (let i = 0; i < clips.length; i++) {
+      const c = centers[i];
+      if (!c) continue;
+      const d = Math.hypot(c.x - x, c.y - y) / radius;
+      const lit = d >= 1 ? 0 : 1 - d * d;
+      clips[i].style.setProperty('--lit', lit.toFixed(3));
     }
   };
 
-  updateHeaderState();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  // Idle: the lamp drifts slowly across the desk until someone takes over.
+  let userControl = false;
+  let resumeTimer = null;
+  let visible = true;
+  let t0 = performance.now();
 
-  // ============================================================================
-  // Back to Top Button
-  // ============================================================================
-
-  const backToTop = document.querySelector('.back-to-top');
-
-  if (backToTop) {
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-
-  // ============================================================================
-  // Writing Page — Toggle More Articles
-  // ============================================================================
-
-  const moreToggle = document.querySelector('.more-toggle');
-  const moreLinks = document.querySelector('.more-links');
-
-  if (moreToggle && moreLinks) {
-    moreToggle.addEventListener('click', () => {
-      const isHidden = moreLinks.hasAttribute('hidden');
-
-      if (isHidden) {
-        moreLinks.removeAttribute('hidden');
-        moreToggle.textContent = 'Less writing';
-      } else {
-        moreLinks.setAttribute('hidden', '');
-        moreToggle.textContent = 'More writing';
-      }
-    });
-  }
-
-  // ============================================================================
-  // Navigation — Active State
-  // ============================================================================
-
-  const navLinks = document.querySelectorAll('.nav a');
-  const currentPath = window.location.pathname;
-
-  navLinks.forEach((link) => {
-    const linkPath = link.getAttribute('href');
-    if (linkPath === currentPath || (linkPath !== '/' && currentPath.startsWith(linkPath))) {
-      link.classList.add('active');
+  const drift = (now) => {
+    if (!userControl && visible) {
+      const t = (now - t0) / 1000;
+      const w = box.width;
+      const h = box.height;
+      const cx = w < 700 ? w * 0.5 : w * 0.66;
+      const ax = w < 700 ? w * 0.32 : w * 0.28;
+      light(cx + Math.sin(t * 0.23) * ax, h * (w < 700 ? 0.3 : 0.5) + Math.sin(t * 0.37 + 1) * h * (w < 700 ? 0.2 : 0.32));
     }
+    requestAnimationFrame(drift);
+  };
+
+  const takeOver = (x, y) => {
+    userControl = true;
+    clearTimeout(resumeTimer);
+    light(x, y);
+  };
+
+  const releaseSoon = () => {
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(() => {
+      userControl = false;
+      t0 = performance.now() - 0; // restart the drift smoothly from its start
+    }, 3000);
+  };
+
+  hero.addEventListener('pointermove', (e) => {
+    takeOver(e.clientX - box.left, e.clientY - box.top);
   });
+  hero.addEventListener('pointerdown', (e) => {
+    takeOver(e.clientX - box.left, e.clientY - box.top);
+  });
+  hero.addEventListener('pointerleave', releaseSoon);
+  hero.addEventListener('pointerup', (e) => {
+    if (e.pointerType !== 'mouse') releaseSoon();
+  });
+
+  // Keyboard: focusing a clipping brings the lamp to it.
+  clips.forEach((c, i) => {
+    c.addEventListener('focus', () => {
+      if (centers[i]) takeOver(centers[i].x, centers[i].y);
+    });
+    c.addEventListener('blur', releaseSoon);
+  });
+
+  new IntersectionObserver((entries) => {
+    visible = entries[0].isIntersecting;
+  }).observe(hero);
+
+  window.addEventListener('resize', () => {
+    measure();
+    light(lampX, lampY);
+  });
+  window.addEventListener('scroll', () => {
+    box = hero.getBoundingClientRect();
+  }, { passive: true });
+
+  measure();
+  requestAnimationFrame(drift);
 })();
