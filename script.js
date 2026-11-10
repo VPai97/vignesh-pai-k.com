@@ -5,6 +5,20 @@
 (function () {
   'use strict';
 
+  // Contact page: "Copy email address" (only shown where the clipboard is available).
+  document.querySelectorAll('.copy-email').forEach((btn) => {
+    if (!navigator.clipboard) return;
+    btn.hidden = false;
+    const label = btn.textContent;
+    btn.addEventListener('click', () => {
+      navigator.clipboard.writeText(btn.dataset.email).then(() => {
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = label; btn.classList.remove('copied'); }, 2000);
+      });
+    });
+  });
+
   const hero = document.querySelector('[data-lamp]');
   if (!hero) return;
 
