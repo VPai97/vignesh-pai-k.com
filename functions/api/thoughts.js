@@ -45,10 +45,14 @@ export function parseFeed(xml) {
     .filter((p) => p.title && p.url && p.title.trim().toLowerCase() !== 'coming soon');
 }
 
-export async function onRequest() {
+// GET (and HEAD) only: Cloudflare answers other methods with 405 when only onRequestGet is exported.
+export async function onRequestGet() {
   const headers = {
     'content-type': 'application/json; charset=utf-8',
     'cache-control': 'public, max-age=600',
+    'x-content-type-options': 'nosniff',
+    'content-security-policy': "default-src 'none'; frame-ancestors 'none'",
+    'referrer-policy': 'no-referrer',
   };
   try {
     const res = await fetch(`${SUBSTACK}/feed`, {
@@ -56,7 +60,9 @@ export async function onRequest() {
       cf: { cacheTtl: 600, cacheEverything: true },
     });
     if (!res.ok) throw new Error(`feed returned ${res.status}`);
-    const posts = parseFeed(await res.text());
+    const xml = await res.text();
+    if (xml.length > 5_000_000) throw new Error('feed too large');
+    const posts = parseFeed(xml);
     return new Response(JSON.stringify({ source: SUBSTACK, posts }), { headers });
   } catch (err) {
     return new Response(JSON.stringify({ source: SUBSTACK, posts: [], error: 'feed unavailable' }), {

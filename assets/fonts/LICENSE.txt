@@ -1,0 +1,10 @@
+Fonts in this folder are used under the SIL Open Font License, Version 1.1
+(https://openfontlicense.org/open-font-license-official-text/).
+
+Instrument Serif: Copyright 2022 The Instrument Serif Project Authors
+(https://github.com/Instrument/instrument-serif)
+
+Atkinson Hyperlegible Next: Copyright 2020 Braille Institute of America, Inc.
+(https://github.com/googlefonts/atkinson-hyperlegible-next)
+
+Files are the latin and latin-ext subsets served by Google Fonts, renamed.
